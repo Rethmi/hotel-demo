@@ -121,7 +121,7 @@ export const HomePage = () => {
           {/* Left Text Narrative */}
           <div className="lg:col-span-7 space-y-6">
             <div className="space-y-2">
-              <span className="text-xs font-bold tracking-[0.3em] uppercase text-gold-600 block">
+              <span className="text-xs font-bold tracking-widest uppercase text-gold-600 block">
                 Welcome to Aurelia Grand Resort
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-charcoal-900 leading-tight">
@@ -199,7 +199,7 @@ export const HomePage = () => {
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-2">
-              <span className="text-xs font-bold tracking-[0.3em] uppercase text-gold-600 block">
+              <span className="text-xs font-bold tracking-widest uppercase text-gold-600 block">
                 Accommodations
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-charcoal-900">
@@ -253,7 +253,7 @@ export const HomePage = () => {
       {/* ================================================== */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <span className="text-xs font-bold tracking-[0.3em] uppercase text-gold-600 block">
+          <span className="text-xs font-bold tracking-widest uppercase text-gold-600 block">
             Special Privileges
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl font-bold text-charcoal-900">
@@ -342,7 +342,7 @@ export const HomePage = () => {
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-2">
-              <span className="text-xs font-bold tracking-[0.3em] uppercase text-gold-400 block">
+              <span className="text-xs font-bold tracking-widest uppercase text-gold-400 block">
                 Haute Gastronomy
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white">
@@ -424,7 +424,7 @@ export const HomePage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           <div className="lg:col-span-5 space-y-6">
-            <span className="text-xs font-bold tracking-[0.3em] uppercase text-gold-600 block">
+            <span className="text-xs font-bold tracking-widest uppercase text-gold-600 block">
               Sanctuary of Serenity
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-charcoal-900 leading-tight">
@@ -509,7 +509,7 @@ export const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="text-xs font-bold tracking-[0.3em] uppercase text-gold-600 block">
+            <span className="text-xs font-bold tracking-widest uppercase text-gold-600 block">
               Bespoke Adventures
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-charcoal-900">
@@ -579,7 +579,7 @@ export const HomePage = () => {
       {/* ================================================== */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <span className="text-xs font-bold tracking-[0.3em] uppercase text-gold-600 block">
+          <span className="text-xs font-bold tracking-widest uppercase text-gold-600 block">
             World-Class Amenities
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl font-bold text-charcoal-900">
@@ -613,7 +613,7 @@ export const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 relative z-10">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="text-xs font-bold tracking-[0.3em] uppercase text-gold-400 block">
+            <span className="text-xs font-bold tracking-widest uppercase text-gold-400 block">
               Distinguished Guest Opinions
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white">
@@ -695,7 +695,7 @@ export const HomePage = () => {
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2">
-            <span className="text-xs font-bold tracking-[0.3em] uppercase text-gold-600 block">
+            <span className="text-xs font-bold tracking-widest uppercase text-gold-600 block">
               Visual Narrative
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-charcoal-900">
@@ -743,7 +743,7 @@ export const HomePage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             <div className="lg:col-span-7 space-y-5">
-              <span className="text-xs font-bold tracking-[0.3em] uppercase text-gold-400 block">
+              <span className="text-xs font-bold tracking-widest uppercase text-gold-400 block">
                 Loyalty Invitation
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white">
@@ -817,7 +817,7 @@ export const HomePage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           <div className="lg:col-span-6 space-y-6">
-            <span className="text-xs font-bold tracking-[0.3em] uppercase text-gold-600 block">
+            <span className="text-xs font-bold tracking-widest uppercase text-gold-600 block">
               Riviera Promontory
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-charcoal-900">

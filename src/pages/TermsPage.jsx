@@ -1,11 +1,11 @@
-import React from 'react';
+﻿import React from 'react';
 import { HOTEL_INFO } from '../data/hotelData';
 
 export const TermsPage = () => {
   return (
     <div className="bg-[#FAF8F5] min-h-screen pt-24 pb-20">
       <div className="relative bg-charcoal-950 text-white py-16 px-4 sm:px-6 lg:px-8 text-center space-y-3">
-        <span className="text-xs uppercase tracking-[0.3em] font-bold text-gold-400">
+        <span className="text-xs uppercase tracking-widest font-bold text-gold-400">
           Hospitality Charter
         </span>
         <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold">

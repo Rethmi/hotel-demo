@@ -34,8 +34,8 @@ export const Footer = () => {
         <div className="pb-14 border-b border-white/10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-6 space-y-3">
             <div className="flex items-center space-x-3">
-              <span className="font-serif text-2xl font-bold tracking-[0.2em] text-white uppercase">Aurelia</span>
-              <span className="text-xs tracking-[0.3em] text-gold-400 uppercase font-sans">Grand Resort</span>
+              <span className="font-serif text-2xl font-bold tracking-wider text-white uppercase">Aurelia</span>
+              <span className="text-xs tracking-widest text-gold-400 uppercase font-sans font-medium">Grand Resort</span>
             </div>
             <p className="font-serif text-xl sm:text-2xl text-zinc-100 font-light italic">
               "Where Luxury Meets the Horizon"
@@ -136,10 +136,10 @@ export const Footer = () => {
           {/* Column 5: Direct Contact & Awards */}
           <div className="col-span-2 lg:col-span-1 space-y-4">
             <h4 className="font-serif text-sm font-semibold tracking-wider text-gold-400 uppercase">Contact</h4>
-            <div className="space-y-2 text-zinc-400">
-              <p className="flex items-start space-x-2">
+            <div className="space-y-2.5 text-zinc-400">
+              <p className="flex items-start space-x-2.5 text-xs leading-relaxed">
                 <MapPin className="w-4 h-4 text-gold-400 shrink-0 mt-0.5" />
-                <span>{HOTEL_INFO.address}</span>
+                <span className="leading-relaxed font-normal">{HOTEL_INFO.address}</span>
               </p>
               <p className="flex items-center space-x-2">
                 <Phone className="w-4 h-4 text-gold-400 shrink-0" />
@@ -159,7 +159,7 @@ export const Footer = () => {
               </div>
               <div className="flex items-center space-x-2 text-[11px] text-zinc-300">
                 <Award className="w-4 h-4 text-gold-400" />
-                <span>Condé Nast Gold List World Best Resort</span>
+                <span>Conde Nast Gold List World Best Resort</span>
               </div>
             </div>
           </div>

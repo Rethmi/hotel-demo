@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Sparkles, Droplets, Clock, Star, Check, 
@@ -55,7 +55,7 @@ export const SpaPage = () => {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto text-center space-y-4">
-          <span className="text-xs uppercase tracking-[0.3em] font-bold text-gold-400">
+          <span className="text-xs uppercase tracking-widest font-bold text-gold-400">
             Holistic Sanctuary
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">

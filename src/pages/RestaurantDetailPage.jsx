@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   Clock, MapPin, Award, Utensils, ArrowRight, 
@@ -39,7 +39,7 @@ export const RestaurantDetailPage = () => {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3">
-            <span className="text-xs uppercase tracking-[0.3em] font-bold text-gold-400 bg-black/40 px-3 py-1 rounded inline-block backdrop-blur-sm">
+            <span className="text-xs uppercase tracking-widest font-bold text-gold-400 bg-black/40 px-3 py-1 rounded inline-block backdrop-blur-sm">
               {restaurant.cuisine}
             </span>
             <h1 className="font-serif text-3xl sm:text-5xl font-bold tracking-tight">

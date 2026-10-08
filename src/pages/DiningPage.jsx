@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, MapPin, Award, Utensils, ArrowRight, Star } from 'lucide-react';
 import { RESTAURANTS } from '../data/hotelData';
@@ -19,7 +19,7 @@ export const DiningPage = () => {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto text-center space-y-4">
-          <span className="text-xs uppercase tracking-[0.3em] font-bold text-gold-400">
+          <span className="text-xs uppercase tracking-widest font-bold text-gold-400">
             Culinary Artistry
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">

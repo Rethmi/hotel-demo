@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, KeyRound, CheckCircle2, ArrowRight } from 'lucide-react';
 import { useHotel } from '../context/HotelContext';
@@ -36,7 +36,7 @@ export const ForgotPasswordPage = () => {
           <div className="w-12 h-12 rounded-full border border-gold-400 bg-charcoal-950 text-gold-400 font-serif font-bold text-xl flex items-center justify-center mx-auto shadow-md">
             A
           </div>
-          <span className="text-[10px] uppercase font-bold tracking-[0.25em] text-gold-600 block">
+          <span className="text-[10px] uppercase font-bold tracking-wider text-gold-600 block">
             Account Security
           </span>
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-charcoal-900">

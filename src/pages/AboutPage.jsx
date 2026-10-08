@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Award, ShieldCheck, Heart, Leaf, Clock, MapPin, Sparkles } from 'lucide-react';
 import { HOTEL_INFO } from '../data/hotelData';
 
@@ -26,7 +26,7 @@ export const AboutPage = () => {
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto space-y-3">
-          <span className="text-xs uppercase tracking-[0.3em] font-bold text-gold-400">
+          <span className="text-xs uppercase tracking-widest font-bold text-gold-400">
             Heritage & Legacy Since 1934
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
@@ -43,7 +43,7 @@ export const AboutPage = () => {
         {/* Editorial Narrative Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 space-y-6">
-            <span className="text-xs uppercase font-bold tracking-[0.25em] text-gold-600 block">
+            <span className="text-xs uppercase font-bold tracking-wider text-gold-600 block">
               Our Hospitality Philosophy
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-charcoal-900 leading-tight">
@@ -96,7 +96,7 @@ export const AboutPage = () => {
         {/* History Timeline */}
         <div className="space-y-10">
           <div className="text-center space-y-2">
-            <span className="text-xs uppercase font-bold tracking-[0.25em] text-gold-600">The Archival Journey</span>
+            <span className="text-xs uppercase font-bold tracking-wider text-gold-600">The Archival Journey</span>
             <h2 className="font-serif text-3xl font-bold text-charcoal-900">Nearly a Century of Splendor</h2>
           </div>
 

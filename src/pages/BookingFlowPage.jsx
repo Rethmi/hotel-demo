@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { 
   Check, ArrowRight, ArrowLeft, Calendar, Users, ShieldCheck, 
@@ -115,7 +115,7 @@ export const BookingFlowPage = () => {
           
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
             <div>
-              <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-gold-400">
+              <span className="text-[10px] uppercase tracking-widest font-bold text-gold-400">
                 Official Reservation Engine
               </span>
               <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight">

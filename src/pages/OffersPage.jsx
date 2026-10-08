@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tag, Check, Calendar, ArrowRight, ShieldCheck, Sparkles, Filter } from 'lucide-react';
 import { OFFERS } from '../data/hotelData';
@@ -36,7 +36,7 @@ export const OffersPage = () => {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto text-center space-y-4">
-          <span className="text-xs uppercase tracking-[0.3em] font-bold text-gold-400">
+          <span className="text-xs uppercase tracking-widest font-bold text-gold-400">
             Privileged Invitations
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">

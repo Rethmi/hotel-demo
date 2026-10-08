@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
 import { Award, Check, Sparkles, Star, ShieldCheck, ArrowRight } from 'lucide-react';
 import { useHotel } from '../context/HotelContext';
@@ -51,7 +51,7 @@ export const LoyaltyPage = () => {
       
       {/* Header Banner */}
       <div className="relative bg-charcoal-950 text-white py-20 px-4 sm:px-6 lg:px-8 text-center space-y-4">
-        <span className="text-xs uppercase tracking-[0.3em] font-bold text-gold-400">
+        <span className="text-xs uppercase tracking-widest font-bold text-gold-400">
           Exclusive Recognition
         </span>
         <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">

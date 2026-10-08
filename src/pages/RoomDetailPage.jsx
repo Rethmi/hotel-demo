@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   Users, Maximize2, Bed, Eye, Bookmark, ShieldCheck, 
@@ -169,7 +169,7 @@ export const RoomDetailPage = () => {
           {/* Header Title & Specs */}
           <div className="space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <span className="text-xs font-bold uppercase tracking-[0.25em] text-gold-600 bg-gold-500/10 px-3 py-1 rounded">
+              <span className="text-xs font-bold uppercase tracking-wider text-gold-600 bg-gold-500/10 px-3 py-1 rounded">
                 {room.category}
               </span>
               <div className="flex items-center space-x-1.5 text-xs text-zinc-600 bg-white px-3 py-1 rounded-full border border-sand-300">
@@ -432,7 +432,7 @@ export const RoomDetailPage = () => {
       {/* Similar Rooms Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 pt-16 border-t border-sand-300 space-y-8">
         <div className="text-center space-y-2">
-          <span className="text-xs uppercase font-bold tracking-[0.25em] text-gold-600">Alternative Sanctuaries</span>
+          <span className="text-xs uppercase font-bold tracking-wider text-gold-600">Alternative Sanctuaries</span>
           <h2 className="font-serif text-3xl font-bold text-charcoal-900">You May Also Appreciate</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

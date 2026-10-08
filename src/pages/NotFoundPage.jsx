@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
 import { Compass, Home, BedDouble, Search } from 'lucide-react';
 
@@ -10,7 +10,7 @@ export const NotFoundPage = () => {
           A
         </div>
         
-        <span className="text-[11px] uppercase font-bold tracking-[0.3em] text-gold-600 block">
+        <span className="text-[11px] uppercase font-bold tracking-widest text-gold-600 block">
           404 — Horizon Undefined
         </span>
         

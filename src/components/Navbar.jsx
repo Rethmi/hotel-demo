@@ -106,15 +106,15 @@ export const Navbar = () => {
 
                 {/* Typography Wordmark */}
                 <div className="flex flex-col text-left">
-                  <span className="font-serif text-[16px] sm:text-[18px] font-medium tracking-[0.18em] text-white uppercase group-hover:text-gold-200 transition-colors leading-tight">
+                  <span className="font-serif text-[17px] sm:text-[19px] font-medium tracking-wider text-white uppercase group-hover:text-gold-200 transition-colors leading-tight">
                     Aurelia
                   </span>
                   <div className="flex items-center space-x-1.5 -mt-0.5">
-                    <span className="text-[8.5px] sm:text-[9px] tracking-[0.24em] text-gold-400/80 uppercase font-sans font-medium">
+                    <span className="text-[9px] sm:text-[9.5px] tracking-widest text-gold-400 uppercase font-sans font-medium">
                       Grand Resort
                     </span>
                     <span className="text-zinc-600 text-[8px]">•</span>
-                    <span className="text-[7.5px] tracking-[0.18em] text-zinc-400 uppercase font-sans hidden sm:inline">
+                    <span className="text-[8px] sm:text-[8.5px] tracking-wider text-zinc-400 uppercase font-sans hidden sm:inline">
                       Côte d'Azur
                     </span>
                   </div>

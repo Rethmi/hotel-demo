@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { MapPin, Compass, Phone, Mail, Navigation, Car, Sparkles, Clock } from 'lucide-react';
 import { HOTEL_INFO } from '../data/hotelData';
 
@@ -15,7 +15,7 @@ export const LocationPage = () => {
       
       {/* Header Banner */}
       <div className="relative bg-charcoal-950 text-white py-20 px-4 sm:px-6 lg:px-8 text-center space-y-4">
-        <span className="text-xs uppercase tracking-[0.3em] font-bold text-gold-400">
+        <span className="text-xs uppercase tracking-widest font-bold text-gold-400">
           Riviera Destination
         </span>
         <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
@@ -119,7 +119,7 @@ export const LocationPage = () => {
         {/* Nearby Attractions */}
         <div className="space-y-6">
           <div className="space-y-1">
-            <span className="text-xs uppercase font-bold tracking-[0.25em] text-gold-600">Discover the Region</span>
+            <span className="text-xs uppercase font-bold tracking-wider text-gold-600">Discover the Region</span>
             <h2 className="font-serif text-3xl font-bold text-charcoal-900">Nearby Côte d'Azur Attractions</h2>
           </div>
 

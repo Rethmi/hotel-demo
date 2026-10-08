@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { 
   Calendar, Clock, Users, Utensils, CheckCircle2, 
@@ -73,7 +73,7 @@ export const RestaurantReservationPage = () => {
       {/* Header Banner */}
       <div className="relative bg-charcoal-950 text-white py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center space-y-3">
-          <span className="text-xs uppercase tracking-[0.3em] font-bold text-gold-400">
+          <span className="text-xs uppercase tracking-widest font-bold text-gold-400">
             Fine Dining Concierge
           </span>
           <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold">

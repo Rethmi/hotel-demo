@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { 
   Users, Calendar, MapPin, Sparkles, Check, 
   Send, ShieldCheck, Heart, Award, ArrowRight 
@@ -44,7 +44,7 @@ export const EventsPage = () => {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto text-center space-y-4">
-          <span className="text-xs uppercase tracking-[0.3em] font-bold text-gold-400">
+          <span className="text-xs uppercase tracking-widest font-bold text-gold-400">
             Unforgettable Celebrations
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
@@ -61,7 +61,7 @@ export const EventsPage = () => {
         {/* Venues Showcase Grid */}
         <div className="space-y-6">
           <div className="space-y-1">
-            <span className="text-xs font-bold uppercase tracking-[0.25em] text-gold-600">Spectacular Settings</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-gold-600">Spectacular Settings</span>
             <h2 className="font-serif text-3xl font-bold text-charcoal-900">Our Distinguishing Event Venues</h2>
           </div>
 
@@ -136,7 +136,7 @@ export const EventsPage = () => {
         {/* Interactive Event Inquiry / RFP Form */}
         <div id="proposal-form" className="bg-white rounded-2xl border border-sand-300 p-8 sm:p-12 shadow-luxury max-w-4xl mx-auto space-y-8">
           <div className="text-center space-y-2 max-w-xl mx-auto">
-            <span className="text-xs uppercase tracking-[0.3em] font-bold text-gold-600">Bespoke Curation</span>
+            <span className="text-xs uppercase tracking-widest font-bold text-gold-600">Bespoke Curation</span>
             <h2 className="font-serif text-3xl font-bold text-charcoal-900">Request a Proposal</h2>
             <p className="text-xs text-zinc-500">
               Our dedicated luxury event planning team will prepare a tailored prospectus, floor plan setups, and catering itineraries.

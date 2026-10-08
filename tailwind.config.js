@@ -44,7 +44,7 @@ export default {
       fontFamily: {
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
         cormorant: ['"Cormorant Garamond"', 'serif'],
-        sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+        sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
       },
       boxShadow: {
         'luxury': '0 20px 40px -15px rgba(15, 17, 21, 0.08), 0 0 1px rgba(0, 0, 0, 0.06)',
