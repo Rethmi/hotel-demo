@@ -26,26 +26,23 @@ export const BookingBar = ({ compact = false, className = "" }) => {
   };
 
   return (
-    <div className={`w-full max-w-6xl mx-auto ${className}`}>
-      <div className="bg-charcoal-900/95 backdrop-blur-xl border border-gold-500/30 rounded-xl p-4 sm:p-6 shadow-2xl shadow-black/40">
+    <div className={`w-full max-w-7xl mx-auto ${className}`}>
+      <div className="bg-[#111319]/95 backdrop-blur-xl border border-white/10 rounded-xl p-5 sm:p-6 shadow-2xl">
         
         {/* Top Guarantee Headline */}
-        <div className="flex flex-wrap items-center justify-between gap-2 pb-4 mb-4 border-b border-white/10 text-xs text-zinc-300">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-white/[0.08] text-xs text-zinc-300">
           <div className="flex items-center space-x-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-medium text-white">Direct Official Booking Engine</span>
-            <span className="text-zinc-500 hidden sm:inline">•</span>
-            <span className="text-gold-300 hidden sm:inline flex items-center space-x-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-gold-400 inline" />
-              <span>Best Rate Guaranteed — No Hidden Resort Fees</span>
+            <span className="text-[11px] font-sans font-medium tracking-[0.14em] uppercase text-gold-300">
+              Direct Reservation Sanctuary
+            </span>
+            <span className="text-zinc-600 hidden sm:inline">•</span>
+            <span className="text-zinc-400 hidden sm:inline text-[11px]">
+              Best Rate Guarantee & Complimentary Arrival Privileges
             </span>
           </div>
           <div className="flex items-center space-x-3 text-[11px] text-zinc-400">
-            <span className="flex items-center space-x-1 text-gold-400">
-              <Sparkles className="w-3 h-3" />
-              <span>Free Cancellation Available</span>
-            </span>
-            <span>•</span>
+            <span className="text-zinc-300 font-medium">Flexible Cancellation</span>
+            <span className="text-zinc-600">•</span>
             <span>Instant Confirmation</span>
           </div>
         </div>
@@ -207,10 +204,10 @@ export const BookingBar = ({ compact = false, className = "" }) => {
           <div className="lg:col-span-3">
             <button
               type="submit"
-              className="w-full h-[42px] bg-gradient-to-r from-gold-300 via-gold-400 to-gold-500 hover:from-gold-200 hover:to-gold-400 text-charcoal-950 font-bold uppercase tracking-widest text-xs rounded-lg transition-all shadow-gold-glow flex items-center justify-center space-x-2 transform hover:-translate-y-0.5 active:translate-y-0"
+              className="w-full h-[42px] bg-gold-400 hover:bg-gold-300 text-charcoal-950 font-semibold uppercase tracking-[0.14em] text-xs rounded-lg transition-all flex items-center justify-center space-x-2 shadow-sm"
             >
               <Search className="w-4 h-4" />
-              <span>Search Availability</span>
+              <span>Check Availability</span>
             </button>
           </div>
 

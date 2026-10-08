@@ -60,7 +60,7 @@ export const Footer = () => {
                 </div>
                 <button
                   type="submit"
-                  className="px-6 py-3 bg-gradient-to-r from-gold-400 to-gold-500 hover:from-gold-300 hover:to-gold-400 text-charcoal-950 font-bold uppercase tracking-wider text-xs rounded-sm transition-all duration-200 flex items-center justify-center space-x-2 shrink-0 shadow-gold-glow"
+                  className="px-6 py-3 bg-gold-400 hover:bg-gold-300 text-charcoal-950 font-semibold uppercase tracking-wider text-xs rounded-sm transition-colors flex items-center justify-center space-x-2 shrink-0 shadow-sm"
                 >
                   <span>Subscribe</span>
                   <ArrowRight className="w-3.5 h-3.5" />

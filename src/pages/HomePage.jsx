@@ -46,63 +46,53 @@ export const HomePage = () => {
         {/* Hero Content */}
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white space-y-6 pt-12">
           
-          {/* Top Brand Crest / Rating Pill */}
-          <div className="inline-flex items-center space-x-2 bg-charcoal-900/70 border border-gold-400/40 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg animate-fade-in">
-            <div className="flex text-gold-400">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-3.5 h-3.5 fill-current" />
-              ))}
-            </div>
-            <span className="text-[11px] uppercase tracking-[0.25em] text-gold-300 font-semibold font-sans">
-              French Riviera's Premier 5-Star Haven
+          {/* Top Location Lead */}
+          <div className="inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full border border-white/20 bg-white/[0.04] backdrop-blur-md animate-fade-in">
+            <span className="w-1.5 h-1.5 rounded-full bg-gold-400" />
+            <span className="text-[11px] uppercase tracking-[0.22em] text-gold-300/90 font-medium font-sans">
+              Saint-Jean-Cap-Ferrat · Côte d'Azur
             </span>
           </div>
 
           {/* Main Headline */}
-          <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white leading-[1.08] drop-shadow-md">
-            A Stay Beyond <br />
-            <span className="font-cormorant italic font-normal text-gold-300 text-5xl sm:text-7xl md:text-8xl">
-              Ordinary
+          <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-normal tracking-tight text-white leading-[1.08] drop-shadow-sm max-w-4xl mx-auto">
+            A Sanctuary Above the <br />
+            <span className="font-cormorant italic text-gold-200 text-5xl sm:text-7xl md:text-8xl">
+              Mediterranean
             </span>
           </h1>
 
           {/* Tagline / Subtitle */}
-          <p className="max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-zinc-200 font-light leading-relaxed">
-            Discover refined comfort, Michelin-caliber gastronomy, and unforgettable Mediterranean memories at Aurelia Grand Resort.
+          <p className="max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-zinc-300 font-light leading-relaxed">
+            Where storied French Riviera heritage meets contemporary serenity, Michelin-caliber gastronomy, and uninterrupted horizon views.
           </p>
 
           {/* Dual Action CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-3">
             <Link
               to="/booking"
-              className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-gold-300 via-gold-400 to-gold-500 hover:from-gold-200 hover:to-gold-400 text-charcoal-950 font-bold uppercase tracking-widest text-xs rounded-sm shadow-gold-glow transition-all duration-300 transform hover:-translate-y-0.5"
+              className="w-full sm:w-auto px-8 py-3.5 bg-gold-400 hover:bg-gold-300 text-charcoal-950 font-semibold uppercase tracking-[0.14em] text-xs rounded-sm transition-all duration-300 shadow-sm"
             >
               Check Availability
             </Link>
             <Link
               to="/rooms"
-              className="w-full sm:w-auto px-8 py-3.5 bg-white/10 hover:bg-white/20 text-white border border-white/30 hover:border-gold-400 font-semibold uppercase tracking-widest text-xs rounded-sm backdrop-blur-md transition-all duration-300"
+              className="w-full sm:w-auto px-8 py-3.5 bg-white/5 hover:bg-white/10 text-white border border-white/25 hover:border-gold-300/60 font-medium uppercase tracking-[0.14em] text-xs rounded-sm backdrop-blur-sm transition-all duration-300"
             >
-              Explore Rooms & Suites
+              Explore Accommodations
             </Link>
           </div>
 
           {/* Micro Perks Row */}
-          <div className="flex flex-wrap items-center justify-center gap-6 pt-6 text-xs text-zinc-300/90 font-medium">
+          <div className="flex flex-wrap items-center justify-center gap-6 pt-5 text-xs text-zinc-300/90 font-light tracking-wide">
             <span className="flex items-center space-x-1.5">
-              <ShieldCheck className="w-4 h-4 text-gold-400" />
-              <span>Best Rate Guaranteed</span>
+              <ShieldCheck className="w-3.5 h-3.5 text-gold-400" />
+              <span>Best Direct Rate Guaranteed</span>
             </span>
-            <span className="text-zinc-500">•</span>
-            <span className="flex items-center space-x-1.5">
-              <Sparkles className="w-4 h-4 text-gold-400" />
-              <span>Complimentary Champagne Arrival</span>
-            </span>
-            <span className="text-zinc-500">•</span>
-            <span className="flex items-center space-x-1.5">
-              <Compass className="w-4 h-4 text-gold-400" />
-              <span>Private Helipad Transfers</span>
-            </span>
+            <span className="text-zinc-600">•</span>
+            <span>Complimentary Champagne Arrival</span>
+            <span className="text-zinc-600">•</span>
+            <span>Bespoke Concierge & Yacht Charters</span>
           </div>
 
         </div>
@@ -118,7 +108,7 @@ export const HomePage = () => {
       {/* ================================================== */}
       {/* SECTION 2 — FLOATING BOOKING ENGINE                */}
       {/* ================================================== */}
-      <section className="relative z-20 -mt-16 sm:-mt-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative z-20 -mt-14 sm:-mt-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <BookingBar />
       </section>
 
@@ -185,19 +175,15 @@ export const HomePage = () => {
                 alt="Aurelia Grand Resort Architecture"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-            </div>
-
-            {/* Floating Overlapping Card */}
-            <div className="absolute -bottom-8 -left-8 sm:-left-12 bg-white/95 backdrop-blur-md p-5 rounded-xl shadow-xl border border-sand-300 max-w-xs hidden sm:block">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-600 shrink-0">
-                  <Award className="w-5 h-5" />
-                </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+              
+              {/* Refined Integrated Editorial Caption */}
+              <div className="absolute bottom-5 left-5 right-5 bg-charcoal-950/85 backdrop-blur-md p-4 rounded-lg border border-white/10 text-white flex items-center justify-between">
                 <div>
-                  <p className="font-serif font-bold text-sm text-charcoal-900">Forbes 5-Star</p>
-                  <p className="text-[11px] text-zinc-500">World’s Most Luxurious Resort Award 2026</p>
+                  <p className="text-[10px] tracking-[0.2em] uppercase font-sans text-gold-300 font-medium">Bespoke Hospitality</p>
+                  <p className="font-serif text-sm font-medium text-white">Forbes Travel Guide 5-Star Certified</p>
                 </div>
+                <span className="text-xs font-serif italic text-zinc-300">Est. 1934</span>
               </div>
             </div>
           </div>

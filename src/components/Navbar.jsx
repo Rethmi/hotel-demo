@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Globe, Bookmark, User, Calendar, 
-  Menu, X, Search, ChevronDown, Check, Sparkles, 
+  Menu, X, Search, ChevronDown, Check,
   Phone, ShieldCheck, LogOut, Bell
 } from 'lucide-react';
 import { useHotel } from '../context/HotelContext';
@@ -59,14 +59,13 @@ export const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Curated, editorial navigation links
+  // Curated, editorial navigation links with refined, balanced titles
   const navLinks = [
     { name: "Rooms & Suites", path: "/rooms" },
     { name: "Dining", path: "/dining" },
-    { name: "Spa & Wellness", path: "/spa" },
+    { name: "Wellness", path: "/spa" },
     { name: "Experiences", path: "/experiences" },
     { name: "Offers", path: "/offers" },
-    { name: "Events", path: "/events" },
     { name: "The Estate", path: "/about" },
   ];
 
@@ -80,42 +79,42 @@ export const Navbar = () => {
   };
 
   const navBackgroundClass = !isHome || isScrolled
-    ? "bg-[#0D0F14]/94 backdrop-blur-xl border-b border-gold-500/20 py-3.5 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.6)]"
-    : "bg-gradient-to-b from-[#0B0D11]/85 via-[#0B0D11]/40 to-transparent py-5 sm:py-6 border-b border-white/[0.04]";
+    ? "bg-[#0D0F14]/95 backdrop-blur-xl border-b border-white/[0.08] py-3 sm:py-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
+    : "bg-gradient-to-b from-black/75 via-black/35 to-transparent py-4 sm:py-5 border-b border-white/[0.05]";
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${navBackgroundClass}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBackgroundClass}`}>
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Main 3-Zone Header Bar */}
-          <div className="relative flex items-center justify-between h-12 sm:h-14">
+          {/* Main 3-Column Balanced Header Bar */}
+          <div className="flex items-center justify-between w-full h-12 sm:h-14">
             
             {/* ============================================================ */}
-            {/* ZONE 1 (LEFT): Brand Seal & Heritage Wordmark               */}
+            {/* COLUMN 1 (LEFT): Brand Seal & Heritage Wordmark              */}
             {/* ============================================================ */}
-            <div className="flex items-center shrink-0 z-10">
+            <div className="flex items-center shrink-0">
               <Link 
                 to="/" 
-                className="group flex items-center space-x-3 sm:space-x-3.5 focus:outline-none"
+                className="group flex items-center space-x-3 focus:outline-none"
                 aria-label="Aurelia Grand Resort Home"
               >
                 {/* Refined Gold Crest Seal */}
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gold-400/40 bg-charcoal-900/80 flex items-center justify-center transition-all duration-300 group-hover:border-gold-300 group-hover:scale-105 shadow-gold-glow">
-                  <span className="font-serif text-base sm:text-lg font-bold text-gold-300 tracking-wider">A</span>
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gold-400/40 bg-charcoal-900/90 flex items-center justify-center transition-all duration-300 group-hover:border-gold-300 shadow-sm">
+                  <span className="font-serif text-sm sm:text-base font-semibold text-gold-300 tracking-wider">A</span>
                 </div>
 
                 {/* Typography Wordmark */}
                 <div className="flex flex-col text-left">
-                  <span className="font-serif text-[17px] sm:text-[19px] font-medium tracking-[0.24em] text-white uppercase group-hover:text-gold-200 transition-colors leading-tight">
+                  <span className="font-serif text-[16px] sm:text-[18px] font-medium tracking-[0.18em] text-white uppercase group-hover:text-gold-200 transition-colors leading-tight">
                     Aurelia
                   </span>
                   <div className="flex items-center space-x-1.5 -mt-0.5">
-                    <span className="text-[8.5px] sm:text-[9px] tracking-[0.38em] text-gold-400/90 uppercase font-sans font-medium">
+                    <span className="text-[8.5px] sm:text-[9px] tracking-[0.24em] text-gold-400/80 uppercase font-sans font-medium">
                       Grand Resort
                     </span>
                     <span className="text-zinc-600 text-[8px]">•</span>
-                    <span className="text-[7.5px] tracking-[0.25em] text-zinc-400 uppercase font-sans hidden sm:inline">
+                    <span className="text-[7.5px] tracking-[0.18em] text-zinc-400 uppercase font-sans hidden sm:inline">
                       Côte d'Azur
                     </span>
                   </div>
@@ -124,36 +123,38 @@ export const Navbar = () => {
             </div>
 
             {/* ============================================================ */}
-            {/* ZONE 2 (CENTER): Absolute-Centered Primary Navigation Links  */}
+            {/* COLUMN 2 (CENTER): Primary Navigation Links (Zero Overlap)   */}
             {/* ============================================================ */}
-            <nav className="hidden xl:flex items-center absolute left-1/2 -translate-x-1/2 space-x-6 2xl:space-x-8 text-[12px] tracking-[0.16em] uppercase font-medium">
-              {navLinks.map((link) => {
-                const isActive = location.pathname === link.path;
-                return (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    className={`relative py-1.5 transition-all duration-200 ${
-                      isActive 
-                        ? "text-gold-400 font-semibold" 
-                        : "text-zinc-300/90 hover:text-gold-200"
-                    }`}
-                  >
-                    <span>{link.name}</span>
-                    {isActive && (
-                      <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-[1.5px] bg-gradient-to-r from-transparent via-gold-400 to-transparent rounded-full" />
-                    )}
-                  </Link>
-                );
-              })}
+            <nav className="hidden lg:flex items-center justify-center flex-1 px-4 xl:px-6">
+              <div className="flex items-center space-x-5 xl:space-x-7 2xl:space-x-8">
+                {navLinks.map((link) => {
+                  const isActive = location.pathname === link.path;
+                  return (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      className={`relative py-1 text-[11.5px] xl:text-[12px] 2xl:text-[12.5px] tracking-[0.08em] xl:tracking-[0.1em] uppercase font-medium transition-colors whitespace-nowrap ${
+                        isActive 
+                          ? "text-gold-300" 
+                          : "text-zinc-300/90 hover:text-white"
+                      }`}
+                    >
+                      <span>{link.name}</span>
+                      {isActive && (
+                        <span className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-gold-400/90 rounded-full" />
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
             </nav>
 
             {/* ============================================================ */}
-            {/* ZONE 3 (RIGHT): Restrained Luxury Utilities & Primary CTA    */}
+            {/* COLUMN 3 (RIGHT): Curated Luxury Utilities & Primary CTA     */}
             {/* ============================================================ */}
-            <div className="flex items-center justify-end space-x-2.5 sm:space-x-3 z-10 shrink-0">
+            <div className="flex items-center justify-end shrink-0 space-x-2 sm:space-x-2.5 xl:space-x-3">
               
-              {/* Global Search Button */}
+              {/* Quick Search Button */}
               <button 
                 onClick={() => setIsSearchOpen(true)}
                 title="Search resort (Ctrl+K)"
@@ -163,7 +164,7 @@ export const Navbar = () => {
                 <Search className="w-4 h-4" />
               </button>
 
-              {/* Wishlist Bookmark */}
+              {/* Saved Suites Bookmark */}
               <Link 
                 to="/account/wishlist"
                 title="Saved Sanctuaries"
@@ -172,14 +173,14 @@ export const Navbar = () => {
               >
                 <Bookmark className="w-4 h-4" />
                 {wishlist.length > 0 && (
-                  <span className="absolute top-1 right-1 w-3.5 h-3.5 text-[9px] font-bold bg-gold-500 text-charcoal-950 rounded-full flex items-center justify-center">
+                  <span className="absolute top-1 right-1 w-3.5 h-3.5 text-[9px] font-bold bg-gold-400 text-charcoal-950 rounded-full flex items-center justify-center">
                     {wishlist.length}
                   </span>
                 )}
               </Link>
 
               {/* Unified Preferences Trigger (Currency & Language) */}
-              <div className="relative hidden md:block" ref={prefRef}>
+              <div className="relative hidden sm:block" ref={prefRef}>
                 <button
                   onClick={() => {
                     setPrefDropdownOpen(!prefDropdownOpen);
@@ -188,14 +189,14 @@ export const Navbar = () => {
                   className="flex items-center space-x-1.5 text-xs text-zinc-300 hover:text-gold-300 transition-colors px-2.5 py-1.5 rounded-full border border-white/10 hover:border-gold-500/40 bg-white/[0.03] backdrop-blur-sm"
                   title="Currency & Language"
                 >
-                  <Globe className="w-3.5 h-3.5 text-gold-400" />
-                  <span className="font-sans font-medium tracking-wider text-[11px]">{currency} · {language}</span>
+                  <Globe className="w-3.5 h-3.5 text-gold-400/90" />
+                  <span className="font-sans font-medium tracking-wide text-[11px]">{currency} · {language}</span>
                   <ChevronDown className="w-3 h-3 text-zinc-400 opacity-70 ml-0.5" />
                 </button>
 
                 {/* Unified Preferences Popover */}
                 {prefDropdownOpen && (
-                  <div className="absolute right-0 mt-2.5 w-64 bg-charcoal-900/98 border border-gold-500/30 rounded-xl shadow-2xl p-4 z-50 animate-fade-in text-xs text-zinc-200 divide-y divide-white/10">
+                  <div className="absolute right-0 mt-2.5 w-64 bg-charcoal-900/98 border border-white/15 rounded-xl shadow-2xl p-4 z-50 animate-fade-in text-xs text-zinc-200 divide-y divide-white/10">
                     
                     {/* Currency List */}
                     <div className="pb-3 space-y-1.5">
@@ -273,16 +274,16 @@ export const Navbar = () => {
                 ) : (
                   <Link
                     to="/signin"
-                    className="hidden sm:flex items-center space-x-1.5 text-xs text-zinc-300 hover:text-gold-300 font-medium uppercase tracking-wider px-2 py-1"
+                    className="hidden sm:flex items-center space-x-1.5 text-xs text-zinc-300 hover:text-gold-300 font-medium uppercase tracking-wider px-2 py-1 transition-colors"
                   >
-                    <User className="w-3.5 h-3.5 text-gold-400" />
+                    <User className="w-3.5 h-3.5 text-gold-400/90" />
                     <span>Sign In</span>
                   </Link>
                 )}
 
                 {/* Account Portal Popover */}
                 {accountDropdownOpen && isAuthenticated && (
-                  <div className="absolute right-0 mt-2.5 w-64 bg-charcoal-900/98 border border-gold-500/30 rounded-xl shadow-2xl p-4 z-50 animate-fade-in text-xs text-zinc-200 space-y-3">
+                  <div className="absolute right-0 mt-2.5 w-64 bg-charcoal-900/98 border border-white/15 rounded-xl shadow-2xl p-4 z-50 animate-fade-in text-xs text-zinc-200 space-y-3">
                     <div className="flex items-center space-x-3 pb-3 border-b border-white/10">
                       <img src={user.avatar} alt={user.name} className="w-9 h-9 rounded-full object-cover border border-gold-400" />
                       <div className="truncate">
@@ -320,7 +321,7 @@ export const Navbar = () => {
                           <span>Notifications</span>
                         </div>
                         {unreadNotifs > 0 && (
-                          <span className="text-[10px] bg-gold-500 text-charcoal-950 font-bold px-1.5 py-0.2 rounded-full">
+                          <span className="text-[10px] bg-gold-400 text-charcoal-950 font-bold px-1.5 py-0.2 rounded-full">
                             {unreadNotifs}
                           </span>
                         )}
@@ -343,7 +344,7 @@ export const Navbar = () => {
               {/* Primary "Book Now" CTA */}
               <Link
                 to="/booking"
-                className="hidden sm:inline-flex items-center justify-center px-5 py-2 text-[11px] uppercase tracking-[0.2em] font-semibold text-charcoal-950 bg-gradient-to-r from-gold-300 via-gold-400 to-gold-500 hover:from-gold-200 hover:to-gold-400 rounded-sm shadow-gold-glow transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 shrink-0"
+                className="hidden sm:inline-flex items-center justify-center px-4 sm:px-5 py-2 text-[11px] uppercase tracking-[0.14em] font-semibold text-charcoal-950 bg-gold-400 hover:bg-gold-300 rounded-sm transition-all duration-200 shadow-sm shrink-0 whitespace-nowrap"
               >
                 Book Now
               </Link>
@@ -351,7 +352,7 @@ export const Navbar = () => {
               {/* Mobile Drawer Hamburger Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="xl:hidden p-1.5 text-zinc-200 hover:text-gold-400 focus:outline-none transition-colors"
+                className="lg:hidden p-1.5 text-zinc-200 hover:text-gold-300 focus:outline-none transition-colors"
                 aria-label="Toggle navigation drawer"
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -368,16 +369,16 @@ export const Navbar = () => {
       {/* MOBILE & TABLET DRAWER MENU (RESPONSIVE)                     */}
       {/* ============================================================ */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-charcoal-950/98 backdrop-blur-2xl xl:hidden flex flex-col pt-24 pb-8 px-6 overflow-y-auto animate-fade-in">
+        <div className="fixed inset-0 z-40 bg-charcoal-950/98 backdrop-blur-2xl lg:hidden flex flex-col pt-20 pb-8 px-6 overflow-y-auto animate-fade-in">
           
-          <div className="flex items-center justify-between pb-5 border-b border-gold-500/20">
+          <div className="flex items-center justify-between pb-5 border-b border-white/10">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full border border-gold-400/40 bg-charcoal-900 flex items-center justify-center">
-                <span className="font-serif text-lg font-bold text-gold-300">A</span>
+              <div className="w-9 h-9 rounded-full border border-gold-400/40 bg-charcoal-900 flex items-center justify-center">
+                <span className="font-serif text-base font-bold text-gold-300">A</span>
               </div>
               <div>
-                <p className="font-serif text-lg font-bold text-white tracking-[0.2em] uppercase">Aurelia</p>
-                <p className="text-[9px] tracking-[0.35em] text-gold-400 uppercase">Grand Resort</p>
+                <p className="font-serif text-base font-bold text-white tracking-[0.18em] uppercase">Aurelia</p>
+                <p className="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-sans">Grand Resort</p>
               </div>
             </div>
             <button 
@@ -388,40 +389,78 @@ export const Navbar = () => {
             </button>
           </div>
 
-          <nav className="flex flex-col space-y-3.5 py-6 border-b border-white/10 text-sm uppercase tracking-[0.18em] font-sans">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`py-1 transition-colors ${
-                  location.pathname === link.path ? "text-gold-400 font-bold" : "text-zinc-200 hover:text-gold-300"
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
+          <nav className="flex flex-col space-y-3 py-6 border-b border-white/10 text-xs sm:text-sm uppercase tracking-[0.14em] font-sans font-medium">
+            <Link
+              to="/rooms"
+              className={`py-1.5 transition-colors ${
+                location.pathname === '/rooms' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
+              }`}
+            >
+              Rooms & Suites
+            </Link>
+            <Link
+              to="/dining"
+              className={`py-1.5 transition-colors ${
+                location.pathname === '/dining' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
+              }`}
+            >
+              Dining
+            </Link>
+            <Link
+              to="/spa"
+              className={`py-1.5 transition-colors ${
+                location.pathname === '/spa' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
+              }`}
+            >
+              Spa & Wellness
+            </Link>
+            <Link
+              to="/experiences"
+              className={`py-1.5 transition-colors ${
+                location.pathname === '/experiences' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
+              }`}
+            >
+              Experiences
+            </Link>
+            <Link
+              to="/offers"
+              className={`py-1.5 transition-colors ${
+                location.pathname === '/offers' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
+              }`}
+            >
+              Offers & Packages
+            </Link>
+            <Link
+              to="/events"
+              className={`py-1.5 transition-colors ${
+                location.pathname === '/events' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
+              }`}
+            >
+              Events & Galas
+            </Link>
+            <Link
+              to="/about"
+              className={`py-1.5 transition-colors ${
+                location.pathname === '/about' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
+              }`}
+            >
+              The Estate & Heritage
+            </Link>
             <Link
               to="/gallery"
-              className="py-1 text-zinc-200 hover:text-gold-300"
+              className="py-1.5 text-zinc-200 hover:text-gold-300"
             >
               Resort Gallery
             </Link>
             <Link
-              to="/room-service"
-              className="py-1 text-zinc-200 hover:text-gold-300 flex items-center justify-between"
-            >
-              <span>Room Service</span>
-              <span className="text-[9px] bg-gold-500/20 text-gold-300 px-2 py-0.5 rounded uppercase tracking-wider">In-Stay</span>
-            </Link>
-            <Link
               to="/manage-booking"
-              className="py-1 text-zinc-200 hover:text-gold-300"
+              className="py-1.5 text-zinc-200 hover:text-gold-300"
             >
               Find & Manage Stay
             </Link>
           </nav>
 
-          <div className="py-6 space-y-4 border-b border-white/10 text-xs">
+          <div className="py-5 space-y-4 border-b border-white/10 text-xs">
             {/* Currency & Language Row */}
             <div className="grid grid-cols-2 gap-3">
               <div>
@@ -429,7 +468,7 @@ export const Navbar = () => {
                 <select
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value)}
-                  className="w-full bg-charcoal-900 border border-white/20 text-white rounded p-2 text-xs"
+                  className="w-full bg-charcoal-900 border border-white/20 text-white rounded p-2 text-xs focus:outline-none focus:border-gold-400"
                 >
                   {Object.entries(CURRENCIES).map(([code, cur]) => (
                     <option key={code} value={code}>{cur.label}</option>
@@ -441,7 +480,7 @@ export const Navbar = () => {
                 <select
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
-                  className="w-full bg-charcoal-900 border border-white/20 text-white rounded p-2 text-xs"
+                  className="w-full bg-charcoal-900 border border-white/20 text-white rounded p-2 text-xs focus:outline-none focus:border-gold-400"
                 >
                   {LANGUAGES.map((l) => (
                     <option key={l.code} value={l.code}>{l.flag} {l.name}</option>
@@ -455,7 +494,7 @@ export const Navbar = () => {
               {isAuthenticated ? (
                 <Link
                   to="/account"
-                  className="flex items-center space-x-3 text-gold-300 p-2 rounded-lg bg-charcoal-900 border border-gold-500/20"
+                  className="flex items-center space-x-3 text-gold-300 p-2.5 rounded-lg bg-charcoal-900 border border-white/10"
                 >
                   <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full border border-gold-400" />
                   <div>
@@ -464,7 +503,7 @@ export const Navbar = () => {
                   </div>
                 </Link>
               ) : (
-                <Link to="/signin" className="text-gold-400 font-semibold text-xs block text-center py-2 border border-gold-500/30 rounded-lg">
+                <Link to="/signin" className="text-gold-300 font-medium text-xs block text-center py-2.5 border border-gold-500/30 rounded-lg hover:bg-gold-500/10 transition-colors">
                   Sign in or Join Aurelia Privileges
                 </Link>
               )}
@@ -474,12 +513,12 @@ export const Navbar = () => {
           <div className="pt-6 space-y-3">
             <Link
               to="/booking"
-              className="w-full py-3.5 text-center text-xs uppercase tracking-widest font-bold text-charcoal-950 bg-gradient-to-r from-gold-300 via-gold-400 to-gold-500 rounded block shadow-gold-glow"
+              className="w-full py-3 text-center text-xs uppercase tracking-widest font-semibold text-charcoal-950 bg-gold-400 hover:bg-gold-300 rounded block transition-colors"
             >
               Book Your Sanctuary
             </Link>
             <div className="flex items-center justify-center space-x-4 text-xs text-zinc-400 pt-2">
-              <a href={`tel:${HOTEL_INFO.phone}`} className="flex items-center space-x-1 hover:text-white">
+              <a href={`tel:${HOTEL_INFO.phone}`} className="flex items-center space-x-1.5 hover:text-white">
                 <Phone className="w-3.5 h-3.5 text-gold-400" />
                 <span>Concierge Desk</span>
               </a>
