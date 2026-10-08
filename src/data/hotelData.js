@@ -7,7 +7,7 @@ export const HOTEL_INFO = {
   stars: 5,
   rating: 4.98,
   reviewCount: 1420,
-  address: "Baie des Étoiles, Route de la Corniche d'Or, 06210 Mandelieu / Côte d'Azur",
+  address: "Galle Road, Colombo 4, Sri Lanka",
   destination: "French Riviera & Côte d'Azur, France",
   phone: "+33 (0)4 93 88 00 24",
   conciergePhone: "+33 (0)4 93 88 00 99",
