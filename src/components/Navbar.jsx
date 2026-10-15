@@ -1,535 +1,455 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  Globe, Bookmark, User, Calendar, 
+import {
+  Globe, Bookmark, User, Calendar,
   Menu, X, Search, ChevronDown, Check,
   Phone, ShieldCheck, LogOut, Bell
 } from 'lucide-react';
 import { useHotel } from '../context/HotelContext';
 import { CURRENCIES, LANGUAGES, HOTEL_INFO } from '../data/hotelData';
 
+// Desktop shows the six core destinations; the drawer adds the secondary pages.
+const PRIMARY_LINKS = [
+  { name: 'Rooms & Suites', path: '/rooms' },
+  { name: 'Dining', path: '/dining' },
+  { name: 'Spa & Wellness', path: '/spa' },
+  { name: 'Experiences', path: '/experiences' },
+  { name: 'Offers', path: '/offers' },
+  { name: 'The Estate', path: '/about' },
+];
+
+const SECONDARY_LINKS = [
+  { name: 'Events & Galas', path: '/events' },
+  { name: 'Gallery', path: '/gallery' },
+  { name: 'Manage a booking', path: '/manage-booking' },
+];
+
+const iconButton =
+  'relative flex h-9 w-9 items-center justify-center rounded-full text-zinc-300 transition-colors ' +
+  'hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/70';
+
+const menuItem =
+  'flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-zinc-300 transition-colors ' +
+  'hover:bg-white/[0.06] hover:text-white';
+
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [prefDropdownOpen, setPrefDropdownOpen] = useState(false);
-  const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
+  const [prefOpen, setPrefOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
   const prefRef = useRef(null);
   const accountRef = useRef(null);
 
-  const { 
-    currency, setCurrency, 
-    language, setLanguage, 
-    wishlist, notifications, 
-    isAuthenticated, setIsAuthenticated, user, 
-    setIsSearchOpen, showToast 
+  const {
+    currency, setCurrency,
+    language, setLanguage,
+    wishlist, notifications,
+    isAuthenticated, setIsAuthenticated, user,
+    setIsSearchOpen, showToast
   } = useHotel();
 
   const isHome = location.pathname === '/';
+  const isSolid = !isHome || isScrolled || mobileMenuOpen;
+  const unreadNotifs = notifications.filter((n) => !n.read).length;
 
-  // Smooth scroll listener for backdrop transition
+  const isActive = (path) =>
+    location.pathname === path || location.pathname.startsWith(path + '/');
+
+  // Background transition on scroll
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setIsScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close menus on route change or outside click
+  // Close everything on navigation
   useEffect(() => {
     setMobileMenuOpen(false);
-    setPrefDropdownOpen(false);
-    setAccountDropdownOpen(false);
+    setPrefOpen(false);
+    setAccountOpen(false);
   }, [location.pathname]);
 
+  // Outside click + Escape
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (prefRef.current && !prefRef.current.contains(e.target)) {
-        setPrefDropdownOpen(false);
-      }
-      if (accountRef.current && !accountRef.current.contains(e.target)) {
-        setAccountDropdownOpen(false);
+    const onMouseDown = (e) => {
+      if (prefRef.current && !prefRef.current.contains(e.target)) setPrefOpen(false);
+      if (accountRef.current && !accountRef.current.contains(e.target)) setAccountOpen(false);
+    };
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        setPrefOpen(false);
+        setAccountOpen(false);
+        setMobileMenuOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('keydown', onKey);
+    };
   }, []);
 
-  // Curated, editorial navigation links with refined, balanced titles
-  const navLinks = [
-    { name: "Rooms & Suites", path: "/rooms" },
-    { name: "Dining", path: "/dining" },
-    { name: "Wellness", path: "/spa" },
-    { name: "Experiences", path: "/experiences" },
-    { name: "Offers", path: "/offers" },
-    { name: "The Estate", path: "/about" },
-  ];
-
-  const unreadNotifs = notifications.filter(n => !n.read).length;
+  // Lock page scroll behind the drawer
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileMenuOpen]);
 
   const handleSignOut = () => {
     setIsAuthenticated(false);
-    setAccountDropdownOpen(false);
+    setAccountOpen(false);
     showToast('Signed out of Aurelia account', 'info');
     navigate('/signin');
   };
 
-  const navBackgroundClass = !isHome || isScrolled
-    ? "bg-[#0D0F14]/95 backdrop-blur-xl border-b border-white/[0.08] py-3 sm:py-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
-    : "bg-gradient-to-b from-black/75 via-black/35 to-transparent py-4 sm:py-5 border-b border-white/[0.05]";
+  const headerSurface = isSolid
+    ? 'bg-charcoal-950/95 backdrop-blur-lg border-b border-white/10 shadow-[0_1px_0_rgba(0,0,0,0.4)]'
+    : 'bg-gradient-to-b from-black/70 to-transparent border-b border-transparent';
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBackgroundClass}`}>
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          {/* Main 3-Column Balanced Header Bar */}
-          <div className="flex items-center justify-between w-full h-12 sm:h-14">
-            
-            {/* ============================================================ */}
-            {/* COLUMN 1 (LEFT): Brand Seal & Heritage Wordmark              */}
-            {/* ============================================================ */}
-            <div className="flex items-center shrink-0">
-              <Link 
-                to="/" 
-                className="group flex items-center space-x-3 focus:outline-none"
-                aria-label="Aurelia Grand Resort Home"
-              >
-                {/* Refined Gold Crest Seal */}
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gold-400/40 bg-charcoal-900/90 flex items-center justify-center transition-all duration-300 group-hover:border-gold-300 shadow-sm">
-                  <span className="font-serif text-sm sm:text-base font-semibold text-gold-300 tracking-wider">A</span>
-                </div>
+      <header className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${headerSurface}`}>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div
+            className={`flex items-center justify-between gap-6 transition-[height] duration-300 ${
+              isScrolled ? 'h-16' : 'h-[72px]'
+            }`}
+          >
+            {/* Brand */}
+            <Link
+              to="/"
+              aria-label="Aurelia Grand Resort, home"
+              className="group flex shrink-0 items-center gap-3 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/70"
+            >
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-gold-400/50 transition-colors group-hover:border-gold-300">
+                <span className="font-serif text-lg text-gold-300">A</span>
+              </span>
+              <span className="flex flex-col leading-none">
+                <span className="font-serif text-[22px] tracking-wide text-white">Aurelia</span>
+                <span className="mt-1 text-[11px] tracking-[0.18em] text-gold-400">Grand Resort</span>
+              </span>
+            </Link>
 
-                {/* Typography Wordmark */}
-                <div className="flex flex-col text-left">
-                  <span className="font-serif text-[17px] sm:text-[19px] font-medium tracking-wider text-white uppercase group-hover:text-gold-200 transition-colors leading-tight">
-                    Aurelia
-                  </span>
-                  <div className="flex items-center space-x-1.5 -mt-0.5">
-                    <span className="text-[9px] sm:text-[9.5px] tracking-widest text-gold-400 uppercase font-sans font-medium">
-                      Grand Resort
-                    </span>
-                    <span className="text-zinc-600 text-[8px]"></span>
-                    <span className="text-[8px] sm:text-[8.5px] tracking-wider text-zinc-400 uppercase font-sans hidden sm:inline">
-                     
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </div>
-
-            {/* ============================================================ */}
-            {/* COLUMN 2 (CENTER): Primary Navigation Links (Zero Overlap)   */}
-            {/* ============================================================ */}
-            <nav className="hidden lg:flex items-center justify-center flex-1 px-4 xl:px-6">
-              <div className="flex items-center space-x-5 xl:space-x-7 2xl:space-x-8">
-                {navLinks.map((link) => {
-                  const isActive = location.pathname === link.path;
+            {/* Primary navigation */}
+            <nav aria-label="Primary" className="hidden flex-1 justify-center xl:flex">
+              <ul className="flex items-center gap-8">
+                {PRIMARY_LINKS.map((link) => {
+                  const active = isActive(link.path);
                   return (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      className={`relative py-1 text-[11.5px] xl:text-[12px] 2xl:text-[12.5px] tracking-[0.08em] xl:tracking-[0.1em] uppercase font-medium transition-colors whitespace-nowrap ${
-                        isActive 
-                          ? "text-gold-300" 
-                          : "text-zinc-300/90 hover:text-white"
-                      }`}
-                    >
-                      <span>{link.name}</span>
-                      {isActive && (
-                        <span className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-gold-400/90 rounded-full" />
-                      )}
-                    </Link>
+                    <li key={link.path}>
+                      <Link
+                        to={link.path}
+                        aria-current={active ? 'page' : undefined}
+                        className={`relative block whitespace-nowrap py-2 text-[14.5px] font-medium transition-colors ${
+                          active ? 'text-white' : 'text-zinc-400 hover:text-white'
+                        }`}
+                      >
+                        {link.name}
+                        <span
+                          className={`absolute inset-x-0 -bottom-px h-[2px] origin-left bg-gold-400 transition-transform duration-200 ${
+                            active ? 'scale-x-100' : 'scale-x-0'
+                          }`}
+                        />
+                      </Link>
+                    </li>
                   );
                 })}
-              </div>
+              </ul>
             </nav>
 
-            {/* ============================================================ */}
-            {/* COLUMN 3 (RIGHT): Curated Luxury Utilities & Primary CTA     */}
-            {/* ============================================================ */}
-            <div className="flex items-center justify-end shrink-0 space-x-2 sm:space-x-2.5 xl:space-x-3">
-              
-              {/* Quick Search Button */}
-              <button 
+            {/* Utilities */}
+            <div className="flex shrink-0 items-center gap-1">
+              <button
+                type="button"
                 onClick={() => setIsSearchOpen(true)}
-                title="Search resort (Ctrl+K)"
-                className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-300 hover:text-gold-300 hover:bg-white/5 transition-colors focus:outline-none"
-                aria-label="Search"
+                className={iconButton}
+                aria-label="Search the resort"
+                title="Search (Ctrl+K)"
               >
-                <Search className="w-4 h-4" />
+                <Search className="h-[18px] w-[18px]" />
               </button>
 
-              {/* Saved Suites Bookmark */}
-              <Link 
-                to="/account/wishlist"
-                title="Saved Sanctuaries"
-                className="relative w-8 h-8 rounded-full flex items-center justify-center text-zinc-300 hover:text-gold-300 hover:bg-white/5 transition-colors focus:outline-none"
-                aria-label="Wishlist"
-              >
-                <Bookmark className="w-4 h-4" />
+              <Link to="/account/wishlist" className={iconButton} aria-label="Saved suites" title="Saved suites">
+                <Bookmark className="h-[18px] w-[18px]" />
                 {wishlist.length > 0 && (
-                  <span className="absolute top-1 right-1 w-3.5 h-3.5 text-[9px] font-bold bg-gold-400 text-charcoal-950 rounded-full flex items-center justify-center">
+                  <span className="absolute right-0.5 top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-gold-400 px-1 text-[10px] font-semibold leading-none text-charcoal-950">
                     {wishlist.length}
                   </span>
                 )}
               </Link>
 
-              {/* Unified Preferences Trigger (Currency & Language) */}
-              <div className="relative hidden sm:block" ref={prefRef}>
+              {/* Currency & language */}
+              <div className="relative hidden xl:block" ref={prefRef}>
                 <button
-                  onClick={() => {
-                    setPrefDropdownOpen(!prefDropdownOpen);
-                    setAccountDropdownOpen(false);
-                  }}
-                  className="flex items-center space-x-1.5 text-xs text-zinc-300 hover:text-gold-300 transition-colors px-2.5 py-1.5 rounded-full border border-white/10 hover:border-gold-500/40 bg-white/[0.03] backdrop-blur-sm"
-                  title="Currency & Language"
+                  type="button"
+                  onClick={() => { setPrefOpen((v) => !v); setAccountOpen(false); }}
+                  aria-expanded={prefOpen}
+                  aria-haspopup="true"
+                  className="flex h-9 items-center gap-2 rounded-full px-3 text-[13px] font-medium text-zinc-300 transition-colors hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/70"
                 >
-                  <Globe className="w-3.5 h-3.5 text-gold-400/90" />
-                  <span className="font-sans font-medium tracking-wide text-[11px]">{currency} · {language}</span>
-                  <ChevronDown className="w-3 h-3 text-zinc-400 opacity-70 ml-0.5" />
+                  <Globe className="h-4 w-4 text-gold-400" />
+                  <span>{language} / {currency}</span>
+                  <ChevronDown className={`h-3.5 w-3.5 text-zinc-500 transition-transform ${prefOpen ? 'rotate-180' : ''}`} />
                 </button>
 
-                {/* Unified Preferences Popover */}
-                {prefDropdownOpen && (
-                  <div className="absolute right-0 mt-2.5 w-64 bg-charcoal-900/98 border border-white/15 rounded-xl shadow-2xl p-4 z-50 animate-fade-in text-xs text-zinc-200 divide-y divide-white/10">
-                    
-                    {/* Currency List */}
-                    <div className="pb-3 space-y-1.5">
-                      <p className="text-[10px] uppercase font-bold tracking-widest text-gold-400">Select Currency</p>
-                      <div className="grid grid-cols-2 gap-1 pt-1">
-                        {Object.entries(CURRENCIES).map(([code, cur]) => (
-                          <button
-                            key={code}
-                            onClick={() => {
-                              setCurrency(code);
-                              setPrefDropdownOpen(false);
-                            }}
-                            className={`px-2.5 py-1.5 rounded text-left flex items-center justify-between transition-colors ${
-                              currency === code 
-                                ? 'bg-gold-500/15 text-gold-300 font-bold' 
-                                : 'hover:bg-white/5 text-zinc-300'
-                            }`}
-                          >
-                            <span>{cur.symbol} {code}</span>
-                            {currency === code && <Check className="w-3 h-3 text-gold-400" />}
-                          </button>
-                        ))}
-                      </div>
+                {prefOpen && (
+                  <div className="absolute right-0 mt-3 w-72 animate-fade-in rounded-lg border border-white/10 bg-charcoal-900 p-4 shadow-2xl">
+                    <p className="mb-2 text-xs font-medium text-zinc-500">Currency</p>
+                    <div className="grid grid-cols-2 gap-1">
+                      {Object.entries(CURRENCIES).map(([code, cur]) => (
+                        <button
+                          key={code}
+                          type="button"
+                          onClick={() => { setCurrency(code); setPrefOpen(false); }}
+                          className={`flex items-center justify-between rounded-md px-2.5 py-2 text-left text-[13px] transition-colors ${
+                            currency === code
+                              ? 'bg-gold-400/10 text-gold-300'
+                              : 'text-zinc-300 hover:bg-white/[0.06]'
+                          }`}
+                        >
+                          <span>{cur.symbol} {code}</span>
+                          {currency === code && <Check className="h-3.5 w-3.5" />}
+                        </button>
+                      ))}
                     </div>
 
-                    {/* Language List */}
-                    <div className="pt-3 space-y-1.5">
-                      <p className="text-[10px] uppercase font-bold tracking-widest text-gold-400">Select Language</p>
-                      <div className="grid grid-cols-2 gap-1 pt-1">
-                        {LANGUAGES.map((lang) => (
-                          <button
-                            key={lang.code}
-                            onClick={() => {
-                              setLanguage(lang.code);
-                              setPrefDropdownOpen(false);
-                            }}
-                            className={`px-2.5 py-1.5 rounded text-left flex items-center justify-between transition-colors ${
-                              language === lang.code 
-                                ? 'bg-gold-500/15 text-gold-300 font-bold' 
-                                : 'hover:bg-white/5 text-zinc-300'
-                            }`}
-                          >
-                            <span>{lang.flag} {lang.name}</span>
-                            {language === lang.code && <Check className="w-3 h-3 text-gold-400" />}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+                    <div className="my-4 h-px bg-white/10" />
 
+                    <p className="mb-2 text-xs font-medium text-zinc-500">Language</p>
+                    <div className="grid grid-cols-2 gap-1">
+                      {LANGUAGES.map((lang) => (
+                        <button
+                          key={lang.code}
+                          type="button"
+                          onClick={() => { setLanguage(lang.code); setPrefOpen(false); }}
+                          className={`flex items-center justify-between rounded-md px-2.5 py-2 text-left text-[13px] transition-colors ${
+                            language === lang.code
+                              ? 'bg-gold-400/10 text-gold-300'
+                              : 'text-zinc-300 hover:bg-white/[0.06]'
+                          }`}
+                        >
+                          <span>{lang.flag} {lang.name}</span>
+                          {language === lang.code && <Check className="h-3.5 w-3.5" />}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
 
-              {/* Guest Portal / Account Access */}
-              <div className="relative" ref={accountRef}>
+              <span className="mx-2 hidden h-5 w-px bg-white/15 xl:block" aria-hidden="true" />
+
+              {/* Account */}
+              <div className="relative hidden xl:block" ref={accountRef}>
                 {isAuthenticated ? (
                   <button
-                    onClick={() => {
-                      setAccountDropdownOpen(!accountDropdownOpen);
-                      setPrefDropdownOpen(false);
-                    }}
-                    className="flex items-center space-x-2 bg-charcoal-800/60 hover:bg-charcoal-800 border border-gold-500/30 pl-1.5 pr-2.5 py-1 rounded-full transition-all group focus:outline-none"
-                    title="Aurelia Member Portal"
+                    type="button"
+                    onClick={() => { setAccountOpen((v) => !v); setPrefOpen(false); }}
+                    aria-expanded={accountOpen}
+                    aria-haspopup="true"
+                    className="flex h-9 items-center gap-2 rounded-full pl-1 pr-2.5 transition-colors hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/70"
                   >
-                    <img
-                      src={user.avatar}
-                      alt={user.name}
-                      className="w-6 h-6 rounded-full object-cover border border-gold-400/60"
-                    />
-                    <span className="text-[11px] font-medium text-gold-300 hidden sm:inline truncate max-w-[85px]">
-                      {user.membershipTier}
+                    <span className="relative">
+                      <img
+                        src={user.avatar}
+                        alt=""
+                        className="h-7 w-7 rounded-full border border-gold-400/60 object-cover"
+                      />
+                      {unreadNotifs > 0 && (
+                        <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-charcoal-950 bg-gold-400" />
+                      )}
                     </span>
-                    <ChevronDown className="w-3 h-3 text-zinc-400 opacity-60" />
+                    <span className="text-[13px] font-medium text-zinc-200">{user.membershipTier}</span>
+                    <ChevronDown className={`h-3.5 w-3.5 text-zinc-500 transition-transform ${accountOpen ? 'rotate-180' : ''}`} />
                   </button>
                 ) : (
                   <Link
                     to="/signin"
-                    className="hidden sm:flex items-center space-x-1.5 text-xs text-zinc-300 hover:text-gold-300 font-medium uppercase tracking-wider px-2 py-1 transition-colors"
+                    className="flex h-9 items-center gap-2 rounded-full px-3 text-[13px] font-medium text-zinc-300 transition-colors hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/70"
                   >
-                    <User className="w-3.5 h-3.5 text-gold-400/90" />
-                    <span>Sign In</span>
+                    <User className="h-4 w-4 text-gold-400" />
+                    Sign in
                   </Link>
                 )}
 
-                {/* Account Portal Popover */}
-                {accountDropdownOpen && isAuthenticated && (
-                  <div className="absolute right-0 mt-2.5 w-64 bg-charcoal-900/98 border border-white/15 rounded-xl shadow-2xl p-4 z-50 animate-fade-in text-xs text-zinc-200 space-y-3">
-                    <div className="flex items-center space-x-3 pb-3 border-b border-white/10">
-                      <img src={user.avatar} alt={user.name} className="w-9 h-9 rounded-full object-cover border border-gold-400" />
-                      <div className="truncate">
-                        <p className="font-semibold text-white text-xs truncate">{user.name}</p>
-                        <p className="text-[10px] text-gold-400 font-medium uppercase tracking-wider">
-                          {user.membershipTier} • {user.points.toLocaleString()} pts
+                {accountOpen && isAuthenticated && (
+                  <div className="absolute right-0 mt-3 w-64 animate-fade-in rounded-lg border border-white/10 bg-charcoal-900 p-2 shadow-2xl">
+                    <div className="flex items-center gap-3 px-3 py-3">
+                      <img src={user.avatar} alt="" className="h-10 w-10 rounded-full border border-gold-400/60 object-cover" />
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium text-white">{user.name}</p>
+                        <p className="text-xs text-gold-400">
+                          {user.membershipTier} · {user.points.toLocaleString()} points
                         </p>
                       </div>
                     </div>
-
-                    <div className="space-y-1">
-                      <Link
-                        to="/account"
-                        onClick={() => setAccountDropdownOpen(false)}
-                        className="flex items-center space-x-2.5 px-2 py-2 rounded hover:bg-white/5 text-zinc-300 hover:text-white transition-colors"
-                      >
-                        <User className="w-3.5 h-3.5 text-gold-400" />
-                        <span>Member Dashboard</span>
-                      </Link>
-                      <Link
-                        to="/manage-booking"
-                        onClick={() => setAccountDropdownOpen(false)}
-                        className="flex items-center space-x-2.5 px-2 py-2 rounded hover:bg-white/5 text-zinc-300 hover:text-white transition-colors"
-                      >
-                        <Calendar className="w-3.5 h-3.5 text-gold-400" />
-                        <span>Find & Manage Stay</span>
-                      </Link>
-                      <Link
-                        to="/account/notifications"
-                        onClick={() => setAccountDropdownOpen(false)}
-                        className="flex items-center justify-between px-2 py-2 rounded hover:bg-white/5 text-zinc-300 hover:text-white transition-colors"
-                      >
-                        <div className="flex items-center space-x-2.5">
-                          <Bell className="w-3.5 h-3.5 text-gold-400" />
-                          <span>Notifications</span>
-                        </div>
-                        {unreadNotifs > 0 && (
-                          <span className="text-[10px] bg-gold-400 text-charcoal-950 font-bold px-1.5 py-0.2 rounded-full">
-                            {unreadNotifs}
-                          </span>
-                        )}
-                      </Link>
-                    </div>
-
-                    <div className="pt-2 border-t border-white/10">
-                      <button
-                        onClick={handleSignOut}
-                        className="w-full text-left flex items-center space-x-2 px-2 py-1.5 text-zinc-400 hover:text-rose-400 transition-colors"
-                      >
-                        <LogOut className="w-3.5 h-3.5" />
-                        <span>Sign Out</span>
-                      </button>
-                    </div>
+                    <div className="my-1 h-px bg-white/10" />
+                    <Link to="/account" className={menuItem}>
+                      <User className="h-4 w-4 text-gold-400" />
+                      Member dashboard
+                    </Link>
+                    <Link to="/manage-booking" className={menuItem}>
+                      <Calendar className="h-4 w-4 text-gold-400" />
+                      Manage a booking
+                    </Link>
+                    <Link to="/account/notifications" className={`${menuItem} justify-between`}>
+                      <span className="flex items-center gap-3">
+                        <Bell className="h-4 w-4 text-gold-400" />
+                        Notifications
+                      </span>
+                      {unreadNotifs > 0 && (
+                        <span className="rounded-full bg-gold-400 px-1.5 text-[11px] font-semibold leading-5 text-charcoal-950">
+                          {unreadNotifs}
+                        </span>
+                      )}
+                    </Link>
+                    <div className="my-1 h-px bg-white/10" />
+                    <button type="button" onClick={handleSignOut} className={`${menuItem} hover:text-rose-400`}>
+                      <LogOut className="h-4 w-4" />
+                      Sign out
+                    </button>
                   </div>
                 )}
               </div>
 
-              {/* Primary "Book Now" CTA */}
               <Link
                 to="/booking"
-                className="hidden sm:inline-flex items-center justify-center px-4 sm:px-5 py-2 text-[11px] uppercase tracking-[0.14em] font-semibold text-charcoal-950 bg-gold-400 hover:bg-gold-300 rounded-sm transition-all duration-200 shadow-sm shrink-0 whitespace-nowrap"
+                className="ml-2 hidden h-10 shrink-0 items-center whitespace-nowrap rounded-sm bg-gold-400 px-6 text-sm font-semibold text-charcoal-950 transition-colors hover:bg-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-300 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal-950 sm:inline-flex"
               >
-                Book Now
+                Book now
               </Link>
 
-              {/* Mobile Drawer Hamburger Button */}
               <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-1.5 text-zinc-200 hover:text-gold-300 focus:outline-none transition-colors"
-                aria-label="Toggle navigation drawer"
+                type="button"
+                onClick={() => setMobileMenuOpen((v) => !v)}
+                className={`${iconButton} ml-1 xl:hidden`}
+                aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={mobileMenuOpen}
               >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
-
             </div>
-
           </div>
-
         </div>
       </header>
 
-      {/* ============================================================ */}
-      {/* MOBILE & TABLET DRAWER MENU (RESPONSIVE)                     */}
-      {/* ============================================================ */}
+      {/* Mobile / tablet drawer */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-charcoal-950/98 backdrop-blur-2xl lg:hidden flex flex-col pt-20 pb-8 px-6 overflow-y-auto animate-fade-in">
-          
-          <div className="flex items-center justify-between pb-5 border-b border-white/10">
-            <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 rounded-full border border-gold-400/40 bg-charcoal-900 flex items-center justify-center">
-                <span className="font-serif text-base font-bold text-gold-300">A</span>
-              </div>
-              <div>
-                <p className="font-serif text-base font-bold text-white tracking-[0.18em] uppercase">Aurelia</p>
-                <p className="text-[9px] tracking-[0.25em] text-gold-400 uppercase font-sans">Grand Resort</p>
-              </div>
-            </div>
-            <button 
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-2 text-zinc-400 hover:text-white"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+        <div className="fixed inset-0 z-40 flex animate-fade-in flex-col bg-charcoal-950 pt-[72px] xl:hidden">
+          <div className="flex-1 overflow-y-auto px-6 pb-6">
+            <nav aria-label="Mobile">
+              <ul className="divide-y divide-white/10 border-b border-white/10">
+                {PRIMARY_LINKS.map((link) => (
+                  <li key={link.path}>
+                    <Link
+                      to={link.path}
+                      aria-current={isActive(link.path) ? 'page' : undefined}
+                      className={`flex items-center justify-between py-4 font-serif text-xl transition-colors ${
+                        isActive(link.path) ? 'text-gold-300' : 'text-white hover:text-gold-300'
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <ul className="space-y-1 py-4">
+                {SECONDARY_LINKS.map((link) => (
+                  <li key={link.path}>
+                    <Link
+                      to={link.path}
+                      className={`block py-2 text-sm transition-colors ${
+                        isActive(link.path) ? 'text-gold-300' : 'text-zinc-400 hover:text-white'
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-          <nav className="flex flex-col space-y-3 py-6 border-b border-white/10 text-xs sm:text-sm uppercase tracking-[0.14em] font-sans font-medium">
-            <Link
-              to="/rooms"
-              className={`py-1.5 transition-colors ${
-                location.pathname === '/rooms' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
-              }`}
-            >
-              Rooms & Suites
-            </Link>
-            <Link
-              to="/dining"
-              className={`py-1.5 transition-colors ${
-                location.pathname === '/dining' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
-              }`}
-            >
-              Dining
-            </Link>
-            <Link
-              to="/spa"
-              className={`py-1.5 transition-colors ${
-                location.pathname === '/spa' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
-              }`}
-            >
-              Spa & Wellness
-            </Link>
-            <Link
-              to="/experiences"
-              className={`py-1.5 transition-colors ${
-                location.pathname === '/experiences' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
-              }`}
-            >
-              Experiences
-            </Link>
-            <Link
-              to="/offers"
-              className={`py-1.5 transition-colors ${
-                location.pathname === '/offers' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
-              }`}
-            >
-              Offers & Packages
-            </Link>
-            <Link
-              to="/events"
-              className={`py-1.5 transition-colors ${
-                location.pathname === '/events' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
-              }`}
-            >
-              Events & Galas
-            </Link>
-            <Link
-              to="/about"
-              className={`py-1.5 transition-colors ${
-                location.pathname === '/about' ? "text-gold-300" : "text-zinc-200 hover:text-gold-300"
-              }`}
-            >
-              The Estate & Heritage
-            </Link>
-            <Link
-              to="/gallery"
-              className="py-1.5 text-zinc-200 hover:text-gold-300"
-            >
-              Resort Gallery
-            </Link>
-            <Link
-              to="/manage-booking"
-              className="py-1.5 text-zinc-200 hover:text-gold-300"
-            >
-              Find & Manage Stay
-            </Link>
-          </nav>
-
-          <div className="py-5 space-y-4 border-b border-white/10 text-xs">
-            {/* Currency & Language Row */}
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-zinc-400 text-[11px] block mb-1">Currency</label>
+            <div className="grid grid-cols-2 gap-3 border-t border-white/10 py-5">
+              <label className="block text-xs text-zinc-500">
+                Currency
                 <select
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value)}
-                  className="w-full bg-charcoal-900 border border-white/20 text-white rounded p-2 text-xs focus:outline-none focus:border-gold-400"
+                  className="mt-1.5 w-full rounded-md border border-white/15 bg-charcoal-900 px-3 py-2.5 text-sm text-white focus:border-gold-400 focus:outline-none"
                 >
                   {Object.entries(CURRENCIES).map(([code, cur]) => (
                     <option key={code} value={code}>{cur.label}</option>
                   ))}
                 </select>
-              </div>
-              <div>
-                <label className="text-zinc-400 text-[11px] block mb-1">Language</label>
+              </label>
+              <label className="block text-xs text-zinc-500">
+                Language
                 <select
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
-                  className="w-full bg-charcoal-900 border border-white/20 text-white rounded p-2 text-xs focus:outline-none focus:border-gold-400"
+                  className="mt-1.5 w-full rounded-md border border-white/15 bg-charcoal-900 px-3 py-2.5 text-sm text-white focus:border-gold-400 focus:outline-none"
                 >
                   {LANGUAGES.map((l) => (
                     <option key={l.code} value={l.code}>{l.flag} {l.name}</option>
                   ))}
                 </select>
-              </div>
+              </label>
             </div>
 
-            {/* Account Quick Links */}
-            <div className="pt-2">
-              {isAuthenticated ? (
-                <Link
-                  to="/account"
-                  className="flex items-center space-x-3 text-gold-300 p-2.5 rounded-lg bg-charcoal-900 border border-white/10"
-                >
-                  <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full border border-gold-400" />
-                  <div>
-                    <p className="font-semibold text-white text-xs">{user.name}</p>
-                    <p className="text-[10px] text-gold-400 uppercase tracking-wider">{user.membershipTier} Member • {user.points.toLocaleString()} pts</p>
+            {isAuthenticated ? (
+              <div className="rounded-lg border border-white/10 bg-charcoal-900 p-3">
+                <Link to="/account" className="flex items-center gap-3">
+                  <img src={user.avatar} alt="" className="h-10 w-10 rounded-full border border-gold-400/60 object-cover" />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium text-white">{user.name}</p>
+                    <p className="text-xs text-gold-400">
+                      {user.membershipTier} · {user.points.toLocaleString()} points
+                    </p>
                   </div>
                 </Link>
-              ) : (
-                <Link to="/signin" className="text-gold-300 font-medium text-xs block text-center py-2.5 border border-gold-500/30 rounded-lg hover:bg-gold-500/10 transition-colors">
-                  Sign in or Join Aurelia Privileges
-                </Link>
-              )}
-            </div>
+                <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3 text-sm">
+                  <Link to="/account/notifications" className="flex items-center gap-2 text-zinc-300 hover:text-white">
+                    <Bell className="h-4 w-4 text-gold-400" />
+                    Notifications{unreadNotifs > 0 ? ` (${unreadNotifs})` : ''}
+                  </Link>
+                  <button type="button" onClick={handleSignOut} className="text-zinc-400 hover:text-rose-400">
+                    Sign out
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <Link
+                to="/signin"
+                className="block rounded-md border border-gold-400/40 py-3 text-center text-sm font-medium text-gold-300 transition-colors hover:bg-gold-400/10"
+              >
+                Sign in or join Aurelia Privileges
+              </Link>
+            )}
           </div>
 
-          <div className="pt-6 space-y-3">
+          <div className="border-t border-white/10 bg-charcoal-950 px-6 pb-6 pt-4">
             <Link
               to="/booking"
-              className="w-full py-3 text-center text-xs uppercase tracking-widest font-semibold text-charcoal-950 bg-gold-400 hover:bg-gold-300 rounded block transition-colors"
+              className="block rounded-sm bg-gold-400 py-3.5 text-center text-sm font-semibold text-charcoal-950 transition-colors hover:bg-gold-300"
             >
-              Book Your Sanctuary
+              Book now
             </Link>
-            <div className="flex items-center justify-center space-x-4 text-xs text-zinc-400 pt-2">
-              <a href={`tel:${HOTEL_INFO.phone}`} className="flex items-center space-x-1.5 hover:text-white">
-                <Phone className="w-3.5 h-3.5 text-gold-400" />
-                <span>Concierge Desk</span>
+            <div className="mt-4 flex items-center justify-center gap-5 text-xs text-zinc-400">
+              <a href={`tel:${HOTEL_INFO.phone}`} className="flex items-center gap-1.5 hover:text-white">
+                <Phone className="h-3.5 w-3.5 text-gold-400" />
+                Call the concierge
               </a>
-              <span className="text-zinc-600">•</span>
-              <span className="flex items-center space-x-1 text-gold-400">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>Best Rate Guaranteed</span>
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck className="h-3.5 w-3.5 text-gold-400" />
+                Best rate guaranteed
               </span>
             </div>
           </div>
-
         </div>
       )}
     </>
