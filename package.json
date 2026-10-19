@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "node backend/src/server.js",
+    "server:dev": "node --watch backend/src/server.js",
+    "server:seed": "node backend/src/scripts/seed.js",
+    "server:test": "node backend/src/scripts/testEndpoints.js"
   },
   "devDependencies": {
     "autoprefixer": "^10.6.1",

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { 
   Check, ArrowRight, ArrowLeft, Calendar, Users, ShieldCheck, 
@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useHotel } from '../context/HotelContext';
 import { ROOMS, ADDONS, HOTEL_INFO } from '../data/hotelData';
+import { bookingAPI } from '../services/api';
 
 export const BookingFlowPage = () => {
   const navigate = useNavigate();
@@ -67,12 +68,14 @@ export const BookingFlowPage = () => {
     }
   };
 
-  const handleCompleteBooking = (e) => {
+  const handleCompleteBooking = async (e) => {
     e.preventDefault();
     const reference = `AGR-${Math.floor(10000 + Math.random() * 90000)}-2026`;
-    const newBooking = {
+    let newBooking = {
       id: reference,
+      bookingReference: reference,
       status: "Confirmed",
+      roomId: selectedRoom.id,
       room: selectedRoom,
       checkIn: searchParams.checkIn,
       checkOut: searchParams.checkOut,
@@ -92,10 +95,19 @@ export const BookingFlowPage = () => {
       specialRequests: specialRequestsText
     };
 
+    try {
+      const apiRes = await bookingAPI.create(newBooking);
+      if (apiRes?.data) {
+        newBooking = { ...newBooking, ...apiRes.data };
+      }
+    } catch (err) {
+      console.warn('Backend booking sync notice:', err.message);
+    }
+
     setConfirmedBooking(newBooking);
     setBookings(prev => [newBooking, ...prev]);
     setCurrentStep(5);
-    showToast(`Booking ${reference} confirmed! Confirmation sent to ${guestDetails.email}`, 'success');
+    showToast(`Booking ${newBooking.id || reference} confirmed! Confirmation sent to ${guestDetails.email}`, 'success');
   };
 
   const steps = [

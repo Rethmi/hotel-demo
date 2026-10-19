@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { CURRENCIES, ROOMS, ADDONS, OFFERS, RESTAURANTS, EXPERIENCES, SPA_SERVICES } from '../data/hotelData';
+import { authAPI, bookingAPI, diningAPI, spaAPI, roomServiceAPI, requestAPI, notificationAPI } from '../services/api';
 
 const HotelContext = createContext();
 
@@ -265,6 +266,91 @@ export const HotelProvider = ({ children }) => {
 
   // Toast System
   const [toast, setToast] = useState(null);
+
+  // Sync with Express/MongoDB Backend API
+  useEffect(() => {
+    let isMounted = true;
+    const syncBackendData = async () => {
+      try {
+        let token = localStorage.getItem('aurelia_auth_token');
+        if (!token) {
+          try {
+            const demoRes = await authAPI.demoLogin();
+            if (demoRes?.data?.token) {
+              token = demoRes.data.token;
+              if (isMounted && demoRes.data) {
+                setUser(demoRes.data);
+                setIsAuthenticated(true);
+              }
+            }
+          } catch (e) {}
+        } else {
+          try {
+            const profileRes = await authAPI.getProfile();
+            if (isMounted && profileRes?.data) {
+              setUser(profileRes.data);
+              setIsAuthenticated(true);
+            }
+          } catch (e) {}
+        }
+
+        // Fetch bookings from database
+        try {
+          const bookingsRes = await bookingAPI.getMyBookings();
+          if (isMounted && bookingsRes?.data?.length > 0) {
+            setBookings(bookingsRes.data);
+          }
+        } catch (e) {}
+
+        // Fetch dining reservations from database
+        try {
+          const diningRes = await diningAPI.getMyReservations();
+          if (isMounted && diningRes?.data?.length > 0) {
+            setRestaurantReservations(diningRes.data);
+          }
+        } catch (e) {}
+
+        // Fetch spa appointments from database
+        try {
+          const spaRes = await spaAPI.getMyAppointments();
+          if (isMounted && spaRes?.data?.length > 0) {
+            setSpaAppointments(spaRes.data);
+          }
+        } catch (e) {}
+
+        // Fetch room service orders from database
+        try {
+          const ordersRes = await roomServiceAPI.getMyOrders();
+          if (isMounted && ordersRes?.data?.length > 0) {
+            setRoomServiceOrders(ordersRes.data);
+          }
+        } catch (e) {}
+
+        // Fetch guest requests from database
+        try {
+          const reqRes = await requestAPI.getAll();
+          if (isMounted && reqRes?.data?.length > 0) {
+            setGuestRequests(reqRes.data);
+          }
+        } catch (e) {}
+
+        // Fetch notifications from database
+        try {
+          const notifRes = await notificationAPI.getAll();
+          if (isMounted && notifRes?.data?.length > 0) {
+            setNotifications(notifRes.data);
+          }
+        } catch (e) {}
+      } catch (err) {
+        // Fallback to local state seamlessly
+      }
+    };
+
+    syncBackendData();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const showToast = (message, type = "success") => {
     setToast({ message, type, id: Date.now() });

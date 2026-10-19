@@ -1,7 +1,8 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Send, MessageSquare, Clock, CheckCircle2 } from 'lucide-react';
 import { HOTEL_INFO } from '../data/hotelData';
 import { useHotel } from '../context/HotelContext';
+import { contactAPI } from '../services/api';
 
 export const ContactPage = () => {
   const { showToast } = useHotel();
@@ -13,8 +14,13 @@ export const ContactPage = () => {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      await contactAPI.submit(formData);
+    } catch (err) {
+      console.warn('Contact API notice:', err.message);
+    }
     setSubmitted(true);
     showToast('Inquiry sent to the Aurelia Concierge desk. We will respond promptly.', 'success');
   };

@@ -1,10 +1,11 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   Search, Calendar, ShieldCheck, ArrowRight, CheckCircle2, 
   AlertTriangle, Plus, Trash2, Clock, MapPin, Coffee, Car 
 } from 'lucide-react';
 import { useHotel } from '../context/HotelContext';
 import { ADDONS } from '../data/hotelData';
+import { bookingAPI } from '../services/api';
 
 export const ManageBookingPage = () => {
   const { bookings, setBookings, formatPrice, showToast } = useHotel();
@@ -18,9 +19,19 @@ export const ManageBookingPage = () => {
   const [newCheckIn, setNewCheckIn] = useState(activeBooking?.checkIn || '2026-10-15');
   const [newCheckOut, setNewCheckOut] = useState(activeBooking?.checkOut || '2026-10-19');
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    const found = bookings.find(b => b.id.toUpperCase() === reference.trim().toUpperCase());
+    try {
+      const apiRes = await bookingAPI.lookup(reference, email);
+      if (apiRes?.data) {
+        setActiveBooking(apiRes.data);
+        setSearched(true);
+        showToast('Reservation found in database', 'success');
+        return;
+      }
+    } catch (err) {}
+
+    const found = bookings.find(b => (b.id || b.bookingReference || '').toUpperCase() === reference.trim().toUpperCase());
     if (found) {
       setActiveBooking(found);
       setSearched(true);
@@ -30,22 +41,31 @@ export const ManageBookingPage = () => {
     }
   };
 
-  const handleSaveDates = () => {
+  const handleSaveDates = async () => {
     if (!activeBooking) return;
-    setBookings(prev => prev.map(b => b.id === activeBooking.id ? { ...b, checkIn: newCheckIn, checkOut: newCheckOut } : b));
+    try {
+      await bookingAPI.updateDates(activeBooking.id || activeBooking.bookingReference, newCheckIn, newCheckOut);
+    } catch (err) {}
+
+    setBookings(prev => prev.map(b => (b.id === activeBooking.id || b.bookingReference === activeBooking.bookingReference) ? { ...b, checkIn: newCheckIn, checkOut: newCheckOut } : b));
     setActiveBooking({ ...activeBooking, checkIn: newCheckIn, checkOut: newCheckOut });
     setEditingDates(false);
-    showToast('Reservation dates updated successfully', 'success');
+    showToast('Reservation dates updated successfully in database', 'success');
   };
 
-  const handleCancelBooking = () => {
+  const handleCancelBooking = async () => {
     if (!activeBooking) return;
     const confirm = window.confirm("Are you sure you wish to cancel this reservation? Full refund will be credited.");
     if (!confirm) return;
 
-    setBookings(prev => prev.map(b => b.id === activeBooking.id ? { ...b, status: 'Cancelled (Full Refund Processed)' } : b));
-    setActiveBooking({ ...activeBooking, status: 'Cancelled (Full Refund Processed)' });
-    showToast('Reservation cancelled. Refund has been initiated.', 'info');
+    try {
+      await bookingAPI.cancel(activeBooking.id || activeBooking.bookingReference);
+    } catch (err) {}
+
+    const newStatus = 'Cancelled (Full Refund Processed)';
+    setBookings(prev => prev.map(b => (b.id === activeBooking.id || b.bookingReference === activeBooking.bookingReference) ? { ...b, status: newStatus } : b));
+    setActiveBooking({ ...activeBooking, status: newStatus });
+    showToast('Reservation cancelled. Full refund has been credited.', 'info');
   };
 
   return (

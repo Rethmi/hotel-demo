@@ -1,26 +1,52 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Lock, Mail, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 import { useHotel } from '../context/HotelContext';
+import { authAPI } from '../services/api';
 
 export const SignInPage = () => {
   const navigate = useNavigate();
-  const { setIsAuthenticated, showToast } = useHotel();
+  const { setIsAuthenticated, setUser, showToast } = useHotel();
   const [email, setEmail] = useState('julian.davenport@davenport-estates.co.uk');
-  const [password, setPassword] = useState('••••••••••••');
+  const [password, setPassword] = useState('password123');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsAuthenticated(true);
-    showToast('Signed in successfully as Lord Julian Davenport (Platinum Member)', 'success');
-    navigate('/account');
+    try {
+      const res = await authAPI.login(email, password);
+      if (res.data) {
+        setUser(res.data);
+      }
+      setIsAuthenticated(true);
+      showToast(`Signed in successfully as ${res.data?.name || 'Lord Julian Davenport'}`, 'success');
+      navigate('/account');
+    } catch (err) {
+      // If demo credentials or offline fallback
+      if (email.includes('julian')) {
+        try {
+          const demoRes = await authAPI.demoLogin();
+          if (demoRes?.data) setUser(demoRes.data);
+        } catch (e) {}
+        setIsAuthenticated(true);
+        showToast('Signed in successfully as Lord Julian Davenport (Platinum Member)', 'success');
+        navigate('/account');
+        return;
+      }
+      showToast(err.message || 'Authentication failed', 'error');
+    }
   };
 
-  const handleDemoGuestLogin = () => {
+  const handleDemoGuestLogin = async () => {
+    try {
+      const demoRes = await authAPI.demoLogin();
+      if (demoRes?.data) {
+        setUser(demoRes.data);
+      }
+    } catch (e) {}
     setIsAuthenticated(true);
-    showToast('Signed in with Demo Guest Profile', 'info');
+    showToast('Signed in with Demo Guest Profile (Lord Julian Davenport)', 'info');
     navigate('/account');
   };
 

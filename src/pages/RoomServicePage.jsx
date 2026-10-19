@@ -1,10 +1,11 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   ShoppingBag, Plus, Minus, Trash2, Clock, 
   MapPin, CheckCircle2, ChevronRight, UtensilsCrossed 
 } from 'lucide-react';
 import { ROOM_SERVICE_MENU } from '../data/hotelData';
 import { useHotel } from '../context/HotelContext';
+import { roomServiceAPI } from '../services/api';
 
 export const RoomServicePage = () => {
   const { 
@@ -27,7 +28,7 @@ export const RoomServicePage = () => {
 
   const cartTotal = roomServiceCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-  const handlePlaceOrder = (e) => {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault();
     if (roomServiceCart.length === 0) {
       showToast('Your order tray is empty', 'error');
@@ -35,21 +36,29 @@ export const RoomServicePage = () => {
     }
 
     const orderId = `ORD-${Math.floor(100 + Math.random() * 900)}`;
-    const newOrder = {
+    let newOrder = {
       id: orderId,
+      orderId,
       roomNumber,
       items: [...roomServiceCart],
       total: cartTotal,
       orderTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       estimatedDelivery: '30-40 mins',
-      status: 'Preparing in Kitchen with Executive Chef',
+      status: 'Preparing with Executive Chef',
       instructions
     };
+
+    try {
+      const apiRes = await roomServiceAPI.placeOrder(newOrder);
+      if (apiRes?.data) newOrder = { ...newOrder, ...apiRes.data };
+    } catch (err) {
+      console.warn('Room service order sync notice:', err.message);
+    }
 
     setRoomServiceOrders(prev => [newOrder, ...prev]);
     clearRoomServiceCart();
     setCartDrawerOpen(false);
-    showToast(`Order #${orderId} received for ${roomNumber}. Bon appétit!`, 'success');
+    showToast(`Order #${newOrder.id || orderId} received for ${roomNumber}. Bon appétit!`, 'success');
   };
 
   return (

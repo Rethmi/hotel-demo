@@ -1,11 +1,12 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Lock, Mail, User, Phone, Check, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useHotel } from '../context/HotelContext';
+import { authAPI } from '../services/api';
 
 export const SignUpPage = () => {
   const navigate = useNavigate();
-  const { setIsAuthenticated, showToast } = useHotel();
+  const { setIsAuthenticated, setUser, showToast } = useHotel();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -16,15 +17,24 @@ export const SignUpPage = () => {
     terms: true,
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       showToast('Passwords do not match', 'error');
       return;
     }
-    setIsAuthenticated(true);
-    showToast('Welcome to Aurelia Privileges! Membership registered.', 'success');
-    navigate('/account');
+
+    try {
+      const res = await authAPI.register(formData);
+      if (res.data) {
+        setUser(res.data);
+      }
+      setIsAuthenticated(true);
+      showToast('Welcome to Aurelia Privileges! Membership registered in system.', 'success');
+      navigate('/account');
+    } catch (err) {
+      showToast(err.message || 'Registration failed', 'error');
+    }
   };
 
   const getPasswordStrength = () => {

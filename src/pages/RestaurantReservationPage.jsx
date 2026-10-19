@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { 
   Calendar, Clock, Users, Utensils, CheckCircle2, 
@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { RESTAURANTS, HOTEL_INFO } from '../data/hotelData';
 import { useHotel } from '../context/HotelContext';
+import { diningAPI } from '../services/api';
 
 export const RestaurantReservationPage = () => {
   const [searchParams] = useSearchParams();
@@ -46,11 +47,12 @@ export const RestaurantReservationPage = () => {
 
   const selectedRest = RESTAURANTS.find(r => r.id === formData.restaurantId) || RESTAURANTS[0];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const resId = `RES-${Math.floor(1000 + Math.random() * 9000)}`;
-    const newRes = {
+    let newRes = {
       id: resId,
+      reservationId: resId,
       restaurantId: selectedRest.id,
       restaurantName: selectedRest.name,
       date: formData.date,
@@ -59,8 +61,18 @@ export const RestaurantReservationPage = () => {
       seating: formData.seating,
       occasion: formData.occasion,
       specialRequests: formData.specialRequests,
+      guestName: formData.guestName,
+      guestEmail: formData.guestEmail,
+      guestPhone: formData.guestPhone,
       status: 'Confirmed'
     };
+
+    try {
+      const apiRes = await diningAPI.bookTable(newRes);
+      if (apiRes?.data) newRes = { ...newRes, ...apiRes.data };
+    } catch (err) {
+      console.warn('Dining API sync notice:', err.message);
+    }
 
     setRestaurantReservations(prev => [newRes, ...prev]);
     setConfirmedReservation(newRes);

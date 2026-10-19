@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Sparkles, Droplets, Clock, Star, Check, 
@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { SPA_SERVICES, HOTEL_INFO } from '../data/hotelData';
 import { useHotel } from '../context/HotelContext';
+import { spaAPI } from '../services/api';
 
 export const SpaPage = () => {
   const { formatPrice, showToast, spaAppointments, setSpaAppointments } = useHotel();
@@ -20,11 +21,12 @@ export const SpaPage = () => {
     setBookingModalOpen(true);
   };
 
-  const confirmSpaBooking = (e) => {
+  const confirmSpaBooking = async (e) => {
     e.preventDefault();
     const apptId = `SPA-${Math.floor(1000 + Math.random() * 9000)}`;
-    const newAppt = {
+    let newAppt = {
       id: apptId,
+      appointmentId: apptId,
       serviceId: selectedService.id,
       serviceName: selectedService.name,
       date,
@@ -34,6 +36,13 @@ export const SpaPage = () => {
       therapist,
       status: 'Confirmed'
     };
+
+    try {
+      const apiRes = await spaAPI.bookAppointment(newAppt);
+      if (apiRes?.data) newAppt = { ...newAppt, ...apiRes.data };
+    } catch (err) {
+      console.warn('Spa appointment sync notice:', err.message);
+    }
 
     setSpaAppointments(prev => [newAppt, ...prev]);
     setBookingModalOpen(false);
