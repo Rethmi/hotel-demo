@@ -7,7 +7,7 @@ const connectDB = async () => {
     return conn;
   } catch (error) {
     console.error(`[MongoDB] Connection Error: ${error.message}`);
-    process.exit(1);
+    console.warn('[MongoDB] Server continuing to run in standalone/demo mode without MongoDB.');
   }
 };
 
